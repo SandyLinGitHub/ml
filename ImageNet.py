@@ -41,59 +41,21 @@ AUTOTUNE = tf.data.AUTOTUNE
 
 train_dataset = train_dataset.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 
-pretrained_model = tf.keras.applications.ResNet50(include_top=True, weights='imagenet')
-pretrained_model.trainable = False
+pretrained_model = tf.keras.applications.resnet50.ResNet50(include_top=True, weights='imagenet')
+pretrained_model.trainable= False
 
-pretrained_model.compile(optimizer='adam',
+model = Sequential([
+    pretrained_model,
+    tf.keras.Input(shape = (224,224,3)),
+    tf.keras.layers.Dense(1000)
+])
+
+model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-epochs=10
-pretrained_model.fit(
+epochs=5
+model.fit(
   train_dataset,
   epochs=epochs
 )
-
-
-
-'''
-labels_path = tf.keras.utils.get_file('ImageNetLabels.txt','https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt')
-imagenet_labels = np.array(open(labels_path).read().splitlines())
-
-# Set data_dir to a read-only storage of .tar files
-# Set write_dir to a w/r storage
-data_dir = 'datasets/imagenet/'
-write_dir = 'psando/tf-imagenet-dirs'
-
-# Construct a tf.data.Dataset
-download_config = tfds.download.DownloadConfig(
-                      extract_dir=os.path.join(write_dir, 'extracted'),
-                      manual_dir=data_dir
-                  )
-download_and_prepare_kwargs = {
-    'download_dir': os.path.join(write_dir, 'downloaded'),
-    'download_config': download_config,
-}
-ds = tfds.load('imagenet2012_subset', 
-               data_dir=os.path.join(write_dir, 'data'),         
-               split='train', 
-               shuffle_files=False, 
-               download=True, 
-               as_supervised=True,
-               download_and_prepare_kwargs=download_and_prepare_kwargs)
-'''
-
-
-
-
-'''
-dataset_dir = '/home/slin45/Jupyter_Projects/ILSVRC2012_img_train.tar'
-temp_dir = '/home/slin45/Jupyter_Projects/temp'
-
-download_config = tfds.download.DownloadConfig(
-    extract_dir = os.path.join(temp_dir, 'extracted'),
-    manual_dir = dataset_dir,
-)
-
-tfds.builder("imagenet2012").download_and_prepare(download_config=download_config)
-'''
