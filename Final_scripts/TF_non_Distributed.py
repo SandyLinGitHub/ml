@@ -1,5 +1,5 @@
 ##
-##  ResNet18 model using TensorFlow default data loader non-distributed
+##  TensorFlow default data loader non-distributed
 ##
 import os
 import time
@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-sess_start = time.time()
+sess_start = time.time()        #session start time
 
 # Enable AMP
 policy = tf.keras.mixed_precision.Policy('mixed_float16')
@@ -61,7 +61,7 @@ train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
 )
 
 #create model
-model = ResNet(18)
+model = ResNet(18)    #change 18 to 50 when training ResNet50 model
 
 optimizer_name = tf.keras.optimizers.Adam()
 optimizer = tf.keras.mixed_precision.LossScaleOptimizer(optimizer_name)
@@ -76,13 +76,13 @@ time_intervals = []
 loss_intervals = []
 accuracy_intervals = []
 
-start = time.time()
+start = time.time()            #start of training session
 history=model.fit(
     train_dataset,
     steps_per_epoch=ITERATIONS_PER_EPOCH,
     epochs=1
     )
-curr_time = time.time()
+curr_time = time.time()        #end of training session
 epoch_time = curr_time - start
 time_intervals.append(epoch_time)
 loss_intervals.append(history.history['loss'])
@@ -97,7 +97,7 @@ results_df = pd.DataFrame({
 
 results_df.to_csv('tr_18_TF.csv', index = False)
 
-sess_end = time.time()
+sess_end = time.time()            #session end time
 sess_dur = sess_end - sess_start
 print("Session duration: ", sess_dur)
 
