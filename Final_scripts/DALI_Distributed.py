@@ -13,7 +13,7 @@ import datetime
 import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
-from models.ResNet import ResNet
+from models.ResNet import ResNet                #original source from https://github.com/Apm5/ImageNet_ResNet_Tensorflow2.0/tree/master
 
 import os.path
 from PIL import ImageFile
