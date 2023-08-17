@@ -6,7 +6,7 @@ import time
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
-from models.ResNet import ResNet
+from models.ResNet import ResNet                #original source from https://github.com/Apm5/ImageNet_ResNet_Tensorflow2.0/tree/master
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
